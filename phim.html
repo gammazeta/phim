@@ -1,0 +1,49 @@
+<html>
+  <head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.5.14/hls.min.js"></script>
+  </head>
+  <body>
+	<h1>Watch movie</h1>
+    <video id="video"></video>
+	<div id="ctnMovie">
+
+	</div>
+    <script>
+		async function testFetch(){
+			// get phim slug from url
+			const params = new URLSearchParams(window.location.search);
+			const phim = params.get("phim");
+
+			// url api 1 phim
+			const url = "https://ophim1.com/phim/" + phim;
+
+			// call api get 1 phim
+			await fetch(url,{
+				method: "GET",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+			}).then(res=>{
+				return res.json();
+			}).then(data=>{
+				//add content
+				const ctnMovie = document.getElementById("ctnMovie");
+				ctnMovie.innerHTML = data.movie.content;
+
+				//add video
+				const video = document.getElementById("video");
+				video.controls = true;
+				document.body.appendChild(video);
+
+				const hls = new Hls();
+				hls.loadSource(
+					data.episodes[0].server_data[0].link_m3u8
+				);
+				hls.attachMedia(video);
+			})
+		}
+
+		testFetch();
+    </script>
+  </body>
+</html>

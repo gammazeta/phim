@@ -1,0 +1,29 @@
+<html>
+  <head>
+  </head>
+  <body>
+	<div id="ctnMovie">
+
+	</div>
+    <script>
+		async function testFetch(){
+			const url = "https://ophim1.com/phim/loi-sam-hoi-muon-mang-ii";
+			await fetch(url,{
+				method: "GET",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+			}).then(res=>{
+				return res.json();
+			}).then(data=>{
+				console.log(data);
+				const ctnMovie = document.getElementById("ctnMovie");
+
+				ctnMovie.innerHTML = data.movie.time;
+			})
+		}
+
+		testFetch();
+    </script>
+  </body>
+</html>
